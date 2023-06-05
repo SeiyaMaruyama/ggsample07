@@ -36,5 +36,14 @@ void main(void)
   vec4 idiff = max(rd, 0.0) * kdiff * ldiff;
   vec4 ispec = pow(max(rs, 0.0), kshi) * kspec * lspec;
 
-  fc = iamb + idiff + ispec;
+  float lt = dot(nl, t);
+  float vt = dot(nv, t);
+
+  float cd = sqrt(1 - pow(lt, 2));
+  float cs = sqrt(1 - pow(vt, 2));
+
+  vec4 ndiff = cd * kdiff * ldiff;
+  vec4 nspec = pow(max(cd * cs - lt * vt, 0.0), kshi) * kspec * lspec;
+
+  fc = iamb + ndiff + nspec;
 }
